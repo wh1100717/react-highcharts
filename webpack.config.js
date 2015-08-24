@@ -1,7 +1,8 @@
 module.exports = {
-  watch: true,
+  watch: false,
   entry: {
     index: './index.jsx',
+    highstock: './highstock.jsx',
     more: './more.jsx'
   },
   module: {
