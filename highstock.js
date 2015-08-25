@@ -68,10 +68,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    displayName: 'Highchart',
 
 	    initChart: function() {
-	        if (!this.props.config) {
-	            throw new Error('Config has to be specified, for the Highchart component');
+	        var config = this.props.config
+	        if (!config || !config.series) {
+	            return
 	        }
-	        var config = this.props.config;
 	        var node = this.refs.chart.getDOMNode();
 	        if (!config.chart) {
 	            config.chart = {}
@@ -90,14 +90,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // @todo
 	    // 目前的componentDidUpdate函数有些暴力，直接重新 new Highchart 需要实现一种低成本，不需要重新刷新的更新方式
 	    refreshChart: function() {
-	        if (!this.props.config) {
-	            throw new Error('Config has to be specified, for the Highchart component');
+	        var config = this.props.config
+	        if (!config || !config.series) {
+	            return
 	        }
+	        if (!this.chart) {
+	            return this.initChart()
+	        } 
+
 	        //更新Series
 	        this.updateSeries()
 
 	        //重新更新config
-	        this.config = update(this.props.config, {
+	        this.config = update(config, {
 	            $merge: {}
 	        })
 	    },
@@ -107,6 +112,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var series = this.config.series
 	        var chart = this.getChart()
 	        //和newSeries比较，同步删除不需要的serie
+	        var removeList = []
 	        for (var index = series.length - 1; index >= 0; index--) {
 	            var serie = series[index]
 	            var remove_flag = true
@@ -118,8 +124,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 	            if (remove_flag) {
-	                chart.series[index].remove(true)
+	                removeList.push(serie.id)
 	            }
+	        }
+	        for (var s = 0; s < removeList.length; s++){
+	            chart.get(removeList[s]).remove(true)
 	        }
 	        //循环遍历，寻找需要更新/添加的serie
 	        for (var n_index = newSeries.length - 1; n_index >= 0; n_index--) {
