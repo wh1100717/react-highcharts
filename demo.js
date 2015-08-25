@@ -22341,7 +22341,7 @@
 		  },
 		  componentDidUpdate: function () {
 		    // @todo 待完成
-		    // this.renderChart();
+		    this.renderChart();
 		  },
 		  render: function () {
 		    return React.createElement("div", {className: "chart", ref: "chart"})

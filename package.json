@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "demo": "webpack && webpack --config webpack.demo.config.js && http-server",
+    "demo": "webpack && webpack --config webpack.demo.config.js &&  open http://localhost:8080/demo.html && http-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kirill Cherkashin",
